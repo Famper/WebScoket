@@ -1,8 +1,8 @@
 FROM python:3.12-slim
 
-WORKDIR /python-server
+WORKDIR /backend
 
-COPY /backend /python-server
+COPY /backend /backend
 
 RUN pip3.12 install --no-cache-dir -r requirements.txt
 
