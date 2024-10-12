@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import logging
 
 from websockets import ConnectionClosedOK, ConnectionClosedError, ConnectionClosed

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
 import asyncio
-from websockets.asyncio.server import serve
-from handlers.own_handler import handler
-from environment.parameters import *
+import logging
 
+from websockets.asyncio.server import serve
+
+from environment.parameters import *
+from handlers.own_handler import handler
 
 if bool(get_environment('DEBUG')):
     # Настройка логирования

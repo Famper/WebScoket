@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import os
 
-import logging
+import os
 
 
 def get_environment(name: str):
