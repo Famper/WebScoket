@@ -4,6 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./backend:/python-server
+      - ./backend:/backend'
+    environment:
+      - HOST=${HOST}
+      - PORT=${PORT}
+      - DEBUG=${DEBUG}
     ports:
       - "8765:8765"

@@ -1,24 +1,25 @@
+#!/usr/bin/env python
+
 import asyncio
-import websockets
 import logging
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO)
+from websockets.asyncio.server import serve
 
-async def handler(websocket, path):
-    logging.info("Client connected")
-    try:
-        async for message in websocket:
-            logging.info(f"Received message: {message}")
-            response = f"Echo: {message}"
-            await websocket.send(response)
-    except websockets.exceptions.ConnectionClosed:
-        logging.info("Client disconnected")
+from environment.parameters import *
+from handlers.own_handler import handler
+
+if bool(get_environment('DEBUG')):
+    # Настройка логирования
+    logger = logging.getLogger('websockets')
+    logger.setLevel(logging.DEBUG)
+    logger.addHandler(logging.StreamHandler())
+
 
 async def main():
-    async with websockets.serve(handler, "0.0.0.0", 8765):
-        logging.info("WebSocket server started on ws://0.0.0.0:8765")
+    async with serve(handler, get_environment('HOST'), int(get_environment('PORT'))):
+        logger.debug('\n[SYSTEM]: Все переменные окружения подключены!\n')
         await asyncio.Future()  # run forever
+
 
 if __name__ == "__main__":
     asyncio.run(main())
