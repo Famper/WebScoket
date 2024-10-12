@@ -1,14 +1,24 @@
 import asyncio
 import websockets
+import logging
 
-# create handler for each connection
+# Настройка логирования
+logging.basicConfig(level=logging.INFO)
+
 async def handler(websocket, path):
-    data = await websocket.recv()
-    reply = f"Data recieved as: {data}!"
-    await websocket.send(reply)
+    logging.info("Client connected")
+    try:
+        async for message in websocket:
+            logging.info(f"Received message: {message}")
+            response = f"Echo: {message}"
+            await websocket.send(response)
+    except websockets.exceptions.ConnectionClosed:
+        logging.info("Client disconnected")
 
-if __name__ == '__main__':
-    start_server = websockets.serve(handler, "localhost", 8000)
+async def main():
+    async with websockets.serve(handler, "0.0.0.0", 8765):
+        logging.info("WebSocket server started on ws://0.0.0.0:8765")
+        await asyncio.Future()  # run forever
 
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+if __name__ == "__main__":
+    asyncio.run(main())

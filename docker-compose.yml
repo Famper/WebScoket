@@ -6,4 +6,4 @@ services:
     volumes:
       - ./backend:/python-server
     ports:
-      - "8000:8000"
+      - "8765:8765"
