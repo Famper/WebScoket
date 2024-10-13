@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    network_mode: bridge
     volumes:
       - ./backend:/backend'
     environment:
@@ -11,3 +12,15 @@ services:
       - DEBUG=${DEBUG}
     ports:
       - "8765:8765"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo:/data/db
+    network_mode: bridge
