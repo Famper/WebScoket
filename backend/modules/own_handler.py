@@ -1,8 +1,12 @@
 #!/usr/bin/env python
 
+import json
 import logging
 
 from websockets import ConnectionClosedOK, ConnectionClosedError, ConnectionClosed
+from .handlers.authorization import authorization_handler
+
+logger = logging.getLogger('websockets')
 
 
 async def handler(websocket: any) -> any:
@@ -14,9 +18,13 @@ async def handler(websocket: any) -> any:
     """
     try:
         async for message in websocket:
-            response = f"Echo: {message}"
+            data = json.loads(message)
 
-            await websocket.send(response)
+            if data.get('event') == 'auth':
+                response = authorization_handler(data)
+            else:
+                response = {'data': {'code': 403, 'text': 'Not access'}}
+
+            await websocket.send(json.dumps(response))
     except (ConnectionClosedOK, ConnectionClosedError, ConnectionClosed):
-        logger = logging.getLogger('websockets')
         logger.debug("\n[SYSTEM]: Один из connect'ов закрыт.\n")
