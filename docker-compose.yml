@@ -10,6 +10,7 @@ services:
       - HOST=${HOST}
       - PORT=${PORT}
       - DEBUG=${DEBUG}
+      - PYTHONPATH=/backend
     ports:
       - "8765:8765"
     links:

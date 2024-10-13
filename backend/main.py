@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 
 import asyncio
-import logging
 
 from websockets.asyncio.server import serve
 
-from environment.parameters import *
-from handlers.own_handler import handler
-
-if bool(get_environment('DEBUG')):
-    # Настройка логирования
-    logger = logging.getLogger('websockets')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler())
+from modules.own_handler import handler
+from modules.set_logging import *
 
 
 async def main():
@@ -22,4 +15,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    set_logging()
     asyncio.run(main())
