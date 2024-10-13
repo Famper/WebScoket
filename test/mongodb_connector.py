@@ -47,4 +47,6 @@ if __name__ == "__main__":
     print(get_databases())
     print(create_collection())
 
+    client.close()
+
 
